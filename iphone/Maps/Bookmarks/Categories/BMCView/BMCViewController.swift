@@ -328,6 +328,14 @@ extension BMCViewController: CategorySettingsViewControllerDelegate {
 
 extension BMCViewController: BookmarksListDelegate {
   func bookmarksListDidDeleteGroup() {
-    navigationController?.popViewController(animated: true)
+    if let bookmarksListVC = navigationController?.viewControllers.first(where: { $0 is BookmarksListViewController }) {
+      
+      navigationController?.popToViewController(bookmarksListVC, animated: true)
+    } else {
+      
+      guard let storyboard = self.storyboard else { return }
+      let bookmarksListVC = storyboard.instantiateViewController(withIdentifier: "BookmarksListViewController") as! BookmarksListViewController
+      navigationController?.popViewController(animated: true)
+    }
   }
 }
